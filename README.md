@@ -10,3 +10,6 @@ Caso esteja utilizando windows, digite os comandos abaixo para instalar a versã
 E então mude para averão instalada.
 
         nvm use $(Get-Content .nvmrc)
+
+
+Main.js file

@@ -1,5 +1,32 @@
 const { JSDOM } = require("jsdom")
 
+/**
+ * Craw a website provided in currentURL
+ * @param {*} currentURL String for webpage URL tha will be crawled 
+ */
+async function crawlPage(currentURL) {
+    console.log(`actively crawling: ${currentURL}`)
+
+    try {
+        const resp = await fetch(currentURL)
+        if(resp.status > 399) {
+            console.log(`error in fetch with status code: ${resp.status} on page: ${currentURL}`)
+            return
+        }
+
+        const contentType = resp.headers.get("content-type")
+
+        if(contentType.includes("text/html")){
+            console.log(`no html response, content type: ${contentType}, on page: ${currentURL}`)
+            return
+        }
+
+        console.log(await resp.text())
+    } catch(err) {
+        console.log(`Error in ${err.message}  on page ${currentURL}`)
+    }
+}
+
 function getURLsFromHTML(htmlBody, baseURL){
     const urls = []
     const domObj = new JSDOM(htmlBody)
@@ -43,5 +70,6 @@ function normalizeURL(urlString){
 
 module.exports = {
     normalizeURL,
-    getURLsFromHTML
+    getURLsFromHTML,
+    crawlPage
 }
